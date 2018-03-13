@@ -1,4 +1,38 @@
 ﻿Module modKakao
+
+    Public Function LoginWithCookie(ID As String, PW As String) As String
+
+        Dim sendData As String = "type=w&continue=https%3A%2F%2Fstory.kakao.com&email=" & ID & "&password=" & PW & "&callback_url=https%3A%2F%2Faccounts.kakao.com%2Fcb.html&scriptVersion=1.4.2"
+
+        With Win_Http
+            .Option(WinHttp.WinHttpRequestOption.WinHttpRequestOption_EnableRedirects) = False
+            .Open("POST", "https://accounts.kakao.com/weblogin/authenticate")
+            .SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 5.1; rv:16.0) Gecko/20100101 Firefox/16.0")
+            .SetRequestHeader("Host", "accounts.kakao.com")
+            .SetRequestHeader("Referer", "https://accounts.kakao.com/login/kakaostory")
+            .SetRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+            .SetRequestHeader("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3")
+            .SetRequestHeader("Accept-Encoding", "gzip, deflate, br")
+            .SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            .SetRequestHeader("Connection", "keep-alive")
+            .SetRequestHeader("Upgrade-Insecure-Requests", "1")
+            .SetRequestHeader("Content-Length", sendData.Length)
+            .Send(sendData)
+        End With
+
+        Dim AllHeaders As String = Win_Http.GetAllResponseHeaders
+
+        If InStr(AllHeaders, "_kawlt=") Then
+            Dim tempCookie As String = Split(Split(AllHeaders, "Set-Cookie: _kawlt=")(1), ";")(0)
+            LoginWithCookie = "_kawlt=" & tempCookie & ";"
+        Else
+            LoginWithCookie = Nothing
+        End If
+
+        Win_Http.Option(WinHttp.WinHttpRequestOption.WinHttpRequestOption_EnableRedirects) = True
+
+    End Function
+
     Public Function Login(ID As String, PW As String) As Boolean
         With Win_Http
             .Open("POST", "https://accounts.kakao.com/weblogin/authenticate")
@@ -111,6 +145,7 @@
             .SetRequestHeader("X-Kakao-ApiLevel", "31")
             .SetRequestHeader("X-Kakao-DeviceInfo", "web:-;-;-")
             .SetRequestHeader("X-Requested-With", "XMLHttpRequest")
+            .SetRequestHeader("Cookie", loginCookie)
             .SetRequestHeader("Referer", "https://story.kakao.com/")
             .Send()
         End With
@@ -157,8 +192,23 @@
 
         Else
 
-            writeLog("[프로그램/" & Now & "] Story Notifier 알림 종료. 사유: 자동 로그아웃.")
-            Form1.로그아웃ToolStripMenuItem.PerformClick()
+            writeLog("[프로그램/" & Now & "] Story Notifier 알림 종료. 사유: 자동 로그아웃")
+            writeLog("[프로그램/" & Now & "] Story Notifier 재로그인 시도")
+
+            loginCookie = LoginWithCookie(Form1.txtID.Text, Form1.txtPW.Text)
+
+            If loginCookie = Nothing Then
+
+                writeLog("[프로그램/" & Now & "] Story Notifier 재로그인 실패")
+                Form1.로그아웃ToolStripMenuItem.PerformClick()
+
+            Else
+                writeLog("[프로그램/" & Now & "] Story Notifier 재로그인 성공")
+                MyStoryID = loadMyStoryID()
+
+            End If
+
+
 
         End If
     End Sub

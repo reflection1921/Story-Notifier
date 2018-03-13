@@ -70,7 +70,7 @@ Partial Class Form1
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.설정ToolStripMenuItem1, Me.로그아웃ToolStripMenuItem, Me.ToolStripSeparator2, Me.최근알림ToolStripMenuItem, Me.내스토리이동ToolStripMenuItem, Me.설정ToolStripMenuItem, Me.ToolStripSeparator1, Me.프로그램정보ToolStripMenuItem, Me.제작자스토리ToolStripMenuItem, Me.제작자웹사이트ToolStripMenuItem, Me.종료ToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(163, 214)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(163, 236)
         '
         '설정ToolStripMenuItem1
         '
@@ -267,6 +267,7 @@ Partial Class Form1
         Me.lblCaptchaLogin.Size = New System.Drawing.Size(54, 22)
         Me.lblCaptchaLogin.TabIndex = 19
         Me.lblCaptchaLogin.Text = "캡챠 사용"
+        Me.lblCaptchaLogin.Visible = False
         '
         'Form1
         '

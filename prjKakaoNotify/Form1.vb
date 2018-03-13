@@ -8,9 +8,13 @@ Public Class Form1
     End Sub
 
     Private Sub lblLogin_Click(sender As Object, e As EventArgs) Handles lblLogin.Click
+        loginCookie = LoginWithCookie(txtID.Text, txtPW.Text)
 
-        If Login(txtID.Text, txtPW.Text) = True Then
+        If loginCookie = Nothing Then
 
+            MsgBox("로그인에 실패하였습니다." & vbCrLf & "아이디 또는 비밀번호를 확인해주세요.", , "로그인")
+
+        Else
             whenLoginOut(True)
 
             If CheckBox1.Checked = True Then
@@ -20,9 +24,6 @@ Public Class Form1
             MyStoryID = loadMyStoryID()
 
             Notify(NotifyIcon1)
-
-        Else
-            MsgBox("로그인에 실패하였습니다." & vbCrLf & "아이디 또는 비밀번호를 확인해주세요.", , "로그인")
         End If
     End Sub
 
@@ -212,5 +213,4 @@ Public Class Form1
     Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
         lblCaptchaLogin.Font = New Font(NanumGothic.Families(0), 9, FontStyle.Underline)
     End Sub
-
 End Class

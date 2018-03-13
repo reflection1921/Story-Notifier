@@ -1,5 +1,6 @@
 ﻿Imports System.Xml
 Imports System.IO
+Imports System.Security.Cryptography
 
 Module modSettings
 
@@ -9,6 +10,8 @@ Module modSettings
 
     Public accountPath As String = Application.StartupPath & "\Account.xml"
     Public settingsPath As String = Application.StartupPath & "\Settings.xml"
+
+    Public loginCookie As String '//로그인시 필요한 쿠키 값
 
     Public MyStoryID As String '//내 아이디
 
