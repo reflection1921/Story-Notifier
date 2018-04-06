@@ -1,15 +1,17 @@
 ﻿Imports System.Xml
 Imports System.IO
-Imports System.Security.Cryptography
 
 Module modSettings
 
     '//로드된 설정 값
     Public logStatus As Boolean
     Public timerTime As Integer
+    Public autoLoginStatus As Boolean
 
     Public accountPath As String = Application.StartupPath & "\Account.xml"
     Public settingsPath As String = Application.StartupPath & "\Settings.xml"
+
+    Public encryptKey As String = "StoryNotifierForWindows"
 
     Public loginCookie As String '//로그인시 필요한 쿠키 값
 
@@ -40,6 +42,44 @@ Module modSettings
         End With
     End Sub
 
+    Public Function checkSettings(settingsName As String) As Boolean
+        Dim settings As XDocument = XDocument.Load(settingsPath)
+        Dim chkElement As XElement = settings.Root.Element(settingsName)
+
+        If IsNothing(chkElement) = True Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
+    Public Function EncryptTripleDES(text As String) As String
+        Dim wrapper As New clsCrypto(encryptKey)
+        Dim cipherText As String = wrapper.EncryptData(text)
+
+        Return cipherText
+    End Function
+
+    Public Function DecryptTripleDES(encryptedText As String) As String
+        Dim wrapper As New clsCrypto(encryptKey)
+        Dim plainText As String = wrapper.DecryptData(encryptedText)
+
+        Return plainText
+    End Function
+
+    Public Sub modifySettings(settingName As String, settingValue As String)
+        Dim xmlSettings As XDocument = XDocument.Load(settingsPath)
+        xmlSettings.Element("Config").SetElementValue(settingName, settingValue)
+        xmlSettings.Save(settingsPath)
+    End Sub
+
+    Public Sub addSettings(settingName As String, settingValue As String)
+        Dim xmlSettings As XDocument = XDocument.Load(settingsPath)
+        Dim rootPath As XElement = New XElement(settingName, settingValue)
+        xmlSettings.Element("Config").Add(rootPath)
+        xmlSettings.Save(settingsPath)
+    End Sub
+
     Public Function loadAccount(isID As Boolean) As String
 
         Dim xmlAccount As String = File.ReadAllText(accountPath)
@@ -63,7 +103,7 @@ Module modSettings
 
     End Function
 
-    Public Sub createSettings(timer As Integer, writeLogs As Boolean)
+    Public Sub createSettings(timer As Integer, writeLogs As Boolean, autoLogin As Boolean)
         Dim xmlW As New XmlTextWriter(settingsPath, System.Text.Encoding.UTF8)
         With xmlW
             .WriteStartDocument(True)
@@ -77,6 +117,10 @@ Module modSettings
             '//로그 기록
             .WriteStartElement("writeLogs")
             .WriteString(writeLogs)
+            .WriteEndElement()
+            '//자동 로그인 설정
+            .WriteStartElement("autoLogin")
+            .WriteString(autoLogin)
             .WriteEndElement()
 
             .WriteEndElement()
@@ -101,8 +145,17 @@ Module modSettings
                 Else
                     logStatus = False
                 End If
+            ElseIf xmlR.NodeType = XmlNodeType.Element AndAlso xmlR.Name = "autoLogin" Then
+                Dim tmpBool2 As String
+                tmpBool2 = xmlR.ReadElementContentAsString
+                If tmpBool2 = "True" Then
+                    autoLoginStatus = True
+                Else
+                    autoLoginStatus = False
+                End If
+
             Else
-                    xmlR.Read()
+                xmlR.Read()
             End If
         Loop
 

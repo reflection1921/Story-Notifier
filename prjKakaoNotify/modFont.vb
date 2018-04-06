@@ -1,42 +1,11 @@
-﻿Imports System.Drawing.Text
+﻿Module modFont
 
-Module modFont
-    Public NanumGothic, NanumGothicB, NanumGothicEB As New PrivateFontCollection
-
-    Public Sub LoadFont()
-        NanumGothic.AddFontFile(Application.StartupPath & "\Fonts\NanumGothic.ttf")
-        NanumGothicB.AddFontFile(Application.StartupPath & "\Fonts\NanumGothicBold.ttf")
-        NanumGothicEB.AddFontFile(Application.StartupPath & "\Fonts\NanumGothicExtraBold.ttf")
-    End Sub
-
-    Public Sub setFontEB(fontSize As Integer, ParamArray controlName() As Control)
-
-        For i = 0 To UBound(controlName) - 1
-            controlName(i).Font = New Font(NanumGothicEB.Families(0), fontSize)
-        Next
-
-
-    End Sub
-
-    Public Sub setFontB(fontSize As Integer, ParamArray controlName() As Control)
-        For i = 0 To UBound(controlName) - 1
-            controlName(i).Font = New Font(NanumGothicB.Families(0), fontSize)
-        Next
-
-    End Sub
-
-    Public Sub setFontR(fontSize As Integer, ParamArray controlName() As Control)
-        For i = 0 To UBound(controlName) - 1
-            controlName(i).Font = New Font(NanumGothic.Families(0), fontSize)
-        Next
-
-    End Sub
-
-    Public Sub setFontUR(fontSize As Integer, ParamArray controlName() As Control)
-        For i = 0 To UBound(controlName) - 1
-            controlName(i).Font = New Font(NanumGothic.Families(0), fontSize, FontStyle.Underline)
-        Next
-
-    End Sub
+    '//https://stackoverflow.com/questions/15897941/font-is-installed-function 
+    '//Author: Jack Gajanan
+    Public Function IsFontInstalled(ByVal FontName As String) As Boolean
+        Using TestFont As Font = New Font(FontName, 10)
+            Return CBool(String.Compare(FontName, TestFont.Name, StringComparison.InvariantCultureIgnoreCase) = 0)
+        End Using
+    End Function
 
 End Module

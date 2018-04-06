@@ -50,6 +50,7 @@ Partial Class Form1
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.lblCaptchaLogin = New System.Windows.Forms.Label()
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picSet, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -70,7 +71,7 @@ Partial Class Form1
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.설정ToolStripMenuItem1, Me.로그아웃ToolStripMenuItem, Me.ToolStripSeparator2, Me.최근알림ToolStripMenuItem, Me.내스토리이동ToolStripMenuItem, Me.설정ToolStripMenuItem, Me.ToolStripSeparator1, Me.프로그램정보ToolStripMenuItem, Me.제작자스토리ToolStripMenuItem, Me.제작자웹사이트ToolStripMenuItem, Me.종료ToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(163, 236)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(163, 214)
         '
         '설정ToolStripMenuItem1
         '
@@ -123,13 +124,13 @@ Partial Class Form1
         '
         Me.제작자스토리ToolStripMenuItem.Name = "제작자스토리ToolStripMenuItem"
         Me.제작자스토리ToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
-        Me.제작자스토리ToolStripMenuItem.Text = "제작자 스토리"
+        Me.제작자스토리ToolStripMenuItem.Text = "개발자 스토리"
         '
         '제작자웹사이트ToolStripMenuItem
         '
         Me.제작자웹사이트ToolStripMenuItem.Name = "제작자웹사이트ToolStripMenuItem"
         Me.제작자웹사이트ToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
-        Me.제작자웹사이트ToolStripMenuItem.Text = "제작자 웹사이트"
+        Me.제작자웹사이트ToolStripMenuItem.Text = "개발자 웹사이트"
         '
         '종료ToolStripMenuItem
         '
@@ -230,7 +231,7 @@ Partial Class Form1
         '
         'picSet
         '
-        Me.picSet.Image = Global.prjKakaoNotify.My.Resources.Resources._1473058858_Settings
+        Me.picSet.Image = Global.prjKakaoNotify.My.Resources.Resources.Settings
         Me.picSet.Location = New System.Drawing.Point(26, 102)
         Me.picSet.Name = "picSet"
         Me.picSet.Size = New System.Drawing.Size(18, 18)
@@ -268,6 +269,10 @@ Partial Class Form1
         Me.lblCaptchaLogin.TabIndex = 19
         Me.lblCaptchaLogin.Text = "캡챠 사용"
         Me.lblCaptchaLogin.Visible = False
+        '
+        'Timer2
+        '
+        Me.Timer2.Interval = 1000
         '
         'Form1
         '
@@ -327,4 +332,5 @@ Partial Class Form1
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents lblCaptchaLogin As Label
     Friend WithEvents 로그아웃ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Timer2 As Timer
 End Class

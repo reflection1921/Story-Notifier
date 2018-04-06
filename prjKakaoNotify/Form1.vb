@@ -18,7 +18,7 @@ Public Class Form1
             whenLoginOut(True)
 
             If CheckBox1.Checked = True Then
-                createAccount(txtID.Text, txtPW.Text)
+                createAccount(txtID.Text, EncryptTripleDES(txtPW.Text))
             End If
 
             MyStoryID = loadMyStoryID()
@@ -48,7 +48,7 @@ Public Class Form1
     End Sub
 
     Private Sub 프로그램정보ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 프로그램정보ToolStripMenuItem.Click
-        MsgBox("Copyright © Reflection 2016-2017" & vbCrLf & "Developed by Reflection" & vbCrLf & "Special Bug Reporter, Hoppin™", vbInformation, "프로그램 정보")
+        MsgBox("Copyright © Reflection 2016-2018" & vbCrLf & "Developed by Reflection" & vbCrLf & "Special Bug Reporter, Hoppin™" & vbCrLf & "NanumGothic font is created by Naver", vbInformation, "프로그램 정보")
     End Sub
 
     Private Sub 종료ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 종료ToolStripMenuItem.Click
@@ -94,21 +94,36 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoadFont() '// 외부 폰트 로드
+
+        If IsFontInstalled("나눔고딕") = False Or IsFontInstalled("나눔고딕 ExtraBold") = False Then
+            If MsgBox("사용자의 PC에 나눔고딕이 설치되어있지 않습니다." & vbCrLf & "이 프로그램은 나눔고딕을 사용하여 개발되었습니다." & vbCrLf & "지금 나눔고딕을 다운로드하시겠습니까?", vbYesNo) = vbYes Then
+                Shell("explorer.exe ""http://hangeul.naver.com/font""")
+                Me.Close()
+            Else
+                MsgBox("이 프로그램을 정상적으로 사용하기 위해서는 나눔고딕 폰트의 설치가 필요합니다.", vbInformation, "Story Notifier")
+            End If
+        End If
 
         '// 설정파일 X => 설정 파일 생성
         If File.Exists(settingsPath) = False Then
-            createSettings(5000, True)
+            createSettings(5000, True, False)
+        Else
+            '//프로그램 업데이트를 통한 설정 파일 수정
+            If checkSettings("Timer") = False Then
+                addSettings("Timer", "5000")
+            End If
+
+            If checkSettings("writeLogs") = False Then
+                addSettings("writeLogs", "True")
+            End If
+
+            If checkSettings("autoLogin") = False Then
+                addSettings("autoLogin", "False")
+            End If
         End If
 
         loadSettings()
         Timer1.Interval = timerTime
-
-        '//폰트 설정
-        setFontEB(18, lblLogin, lblStart, lblStop)
-        setFontEB(12, txtID, txtPW)
-        setFontR(9, lblSet, CheckBox1)
-        setFontUR(9, lblCaptchaLogin)
 
         lblLogin.ForeColor = Color.White '//로그인 버튼 비활성화 처럼 보이도록 설정
 
@@ -121,8 +136,18 @@ Public Class Form1
             txtPW.PasswordChar = "●"
 
             txtID.Text = loadAccount(True)
-            txtPW.Text = loadAccount(False)
+            txtPW.Text = DecryptTripleDES(loadAccount(False))
 
+        Else
+            If autoLoginStatus = True Then
+                MsgBox("저장된 계정이 없어 자동 로그인을 비활성화 하였습니다. 계정을 저장한 다음, 설정에서 자동 로그인 기능을 활성화 하세요.")
+                modifySettings("autoLogin", "False")
+                autoLoginStatus = False
+            End If
+        End If
+
+        If autoLoginStatus = True Then
+            lblLogin_Click(lblLogin, e)
         End If
 
     End Sub
@@ -161,7 +186,7 @@ Public Class Form1
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         If CheckBox1.Checked = False Then
             If File.Exists(accountPath) = True Then
-                System.IO.File.Delete(accountPath)
+                File.Delete(accountPath)
             End If
         End If
     End Sub
@@ -206,11 +231,16 @@ Public Class Form1
         Form5.Show()
     End Sub
 
-    Private Sub lblCaptchaLogin_MouseMove(sender As Object, e As MouseEventArgs) Handles lblCaptchaLogin.MouseMove
-        lblCaptchaLogin.Font = New Font(NanumGothicEB.Families(0), 9, FontStyle.Underline)
+    Private Sub 로그아웃ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 로그아웃ToolStripMenuItem.Click
+        whenStartStop(False)
+        whenLoginOut(False)
+        Logout()
     End Sub
 
-    Private Sub Form1_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
-        lblCaptchaLogin.Font = New Font(NanumGothic.Families(0), 9, FontStyle.Underline)
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        If CheckConnection() = True Then
+            Timer1.Enabled = True
+            Timer2.Enabled = False
+        End If
     End Sub
 End Class

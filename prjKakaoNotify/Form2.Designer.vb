@@ -30,6 +30,7 @@ Partial Class Form2
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.chkLogSet = New System.Windows.Forms.CheckBox()
+        Me.chkAutoLogin = New System.Windows.Forms.CheckBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -54,9 +55,9 @@ Partial Class Form2
         Me.Label2.Font = New System.Drawing.Font("나눔고딕", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
         Me.Label2.Location = New System.Drawing.Point(14, 53)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(79, 14)
+        Me.Label2.Size = New System.Drawing.Size(54, 14)
         Me.Label2.TabIndex = 2
-        Me.Label2.Text = "알림 시간 설정"
+        Me.Label2.Text = "알림 설정"
         '
         'txtTime
         '
@@ -83,7 +84,7 @@ Partial Class Form2
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("나눔고딕 ExtraBold", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
-        Me.Label4.Location = New System.Drawing.Point(67, 158)
+        Me.Label4.Location = New System.Drawing.Point(67, 162)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(105, 21)
         Me.Label4.TabIndex = 7
@@ -93,7 +94,7 @@ Partial Class Form2
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("나눔고딕", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.Label5.Location = New System.Drawing.Point(14, 102)
+        Me.Label5.Location = New System.Drawing.Point(14, 98)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(54, 14)
         Me.Label5.TabIndex = 8
@@ -103,16 +104,27 @@ Partial Class Form2
         '
         Me.chkLogSet.AutoSize = True
         Me.chkLogSet.Font = New System.Drawing.Font("나눔고딕", 8.999999!)
-        Me.chkLogSet.Location = New System.Drawing.Point(17, 120)
+        Me.chkLogSet.Location = New System.Drawing.Point(17, 116)
         Me.chkLogSet.Name = "chkLogSet"
         Me.chkLogSet.Size = New System.Drawing.Size(120, 18)
         Me.chkLogSet.TabIndex = 9
         Me.chkLogSet.Text = "알림 로그 기록하기"
         Me.chkLogSet.UseVisualStyleBackColor = True
         '
+        'chkAutoLogin
+        '
+        Me.chkAutoLogin.AutoSize = True
+        Me.chkAutoLogin.Font = New System.Drawing.Font("나눔고딕", 8.999999!)
+        Me.chkAutoLogin.Location = New System.Drawing.Point(17, 138)
+        Me.chkAutoLogin.Name = "chkAutoLogin"
+        Me.chkAutoLogin.Size = New System.Drawing.Size(84, 18)
+        Me.chkAutoLogin.TabIndex = 10
+        Me.chkAutoLogin.Text = "자동 로그인"
+        Me.chkAutoLogin.UseVisualStyleBackColor = True
+        '
         'PictureBox3
         '
-        Me.PictureBox3.Image = Global.prjKakaoNotify.My.Resources.Resources._1473058858_Settings
+        Me.PictureBox3.Image = Global.prjKakaoNotify.My.Resources.Resources.Settings
         Me.PictureBox3.Location = New System.Drawing.Point(17, 9)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(28, 28)
@@ -143,7 +155,8 @@ Partial Class Form2
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(251, Byte), Integer), CType(CType(251, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(187, 191)
+        Me.ClientSize = New System.Drawing.Size(187, 197)
+        Me.Controls.Add(Me.chkAutoLogin)
         Me.Controls.Add(Me.chkLogSet)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
@@ -178,4 +191,5 @@ Partial Class Form2
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents chkLogSet As CheckBox
+    Friend WithEvents chkAutoLogin As CheckBox
 End Class

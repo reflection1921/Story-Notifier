@@ -3,8 +3,6 @@
 Public Class Form5
     Dim reCaptchaID_ As String
     Private Sub Form5_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        setFontR(9, txtCaptcha)
-        setFontEB(12, lblLogin)
 
         reCaptchaID_ = reCaptcha()
 

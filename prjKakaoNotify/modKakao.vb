@@ -33,6 +33,20 @@
 
     End Function
 
+    Public Sub Logout()
+        With Win_Http
+            .Open("GET", "https://accounts.kakao.com/logout?continue=https://story.kakao.com/")
+            .SetRequestHeader("Host", "accounts.kakao.com")
+            .SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0")
+            .SetRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+            .SetRequestHeader("Accept-Language", "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3")
+            .SetRequestHeader("Cookie", loginCookie)
+            .SetRequestHeader("Referer", "https://story.kakao.com/")
+            .Send()
+        End With
+    End Sub
+
+    '//Old
     Public Function Login(ID As String, PW As String) As Boolean
         With Win_Http
             .Open("POST", "https://accounts.kakao.com/weblogin/authenticate")
@@ -66,6 +80,7 @@
         End If
     End Function
 
+    '//Old
     Public Function reCaptcha() As String
         With Win_Http
             .Open("GET", "https://www.google.com/recaptcha/api/challenge?k=6LfIz_USAAAAALNnNqQJK8YI9SrPuNJqQeMgY0DY&ajax=1&cachestop=0.27867610606292925&lang=ko")
@@ -79,6 +94,7 @@
         reCaptcha = Split(Split(Win_Http.ResponseText, ": '")(1), "',")(0)
     End Function
 
+    '//Old
     Public Function reCaptchaLogin(ID As String, PW As String, reCaptchaID As String, reCaptchaValue As String) As Boolean
         With Win_Http
             .Open("POST", "https://accounts.kakao.com/weblogin/authenticate_captcha")
@@ -123,6 +139,7 @@
             .SetRequestHeader("X-Kakao-ApiLevel", "29")
             .SetRequestHeader("X-Kakao-DeviceInfo", "web:d;-;-")
             .SetRequestHeader("X-Requested-With", "XMLHttpRequest")
+            .SetRequestHeader("Cookie", loginCookie)
             .Send()
         End With
 
@@ -135,20 +152,35 @@
         Dim comment As String
         Dim NewNotyID As String
 
-        With Win_Http
-            .Open("GET", "https://story.kakao.com/a/notifications")
-            .SetRequestHeader("Host", "story.kakao.com")
-            .SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0")
-            .SetRequestHeader("Accept", "application/json")
-            .SetRequestHeader("Accept-Language", "ko")
-            .SetRequestHeader("Connection", "keep-alive")
-            .SetRequestHeader("X-Kakao-ApiLevel", "31")
-            .SetRequestHeader("X-Kakao-DeviceInfo", "web:-;-;-")
-            .SetRequestHeader("X-Requested-With", "XMLHttpRequest")
-            .SetRequestHeader("Cookie", loginCookie)
-            .SetRequestHeader("Referer", "https://story.kakao.com/")
-            .Send()
-        End With
+        Try
+            With Win_Http
+                .Open("GET", "https://story.kakao.com/a/notifications")
+                .SetRequestHeader("Host", "story.kakao.com")
+                .SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; rv:35.0) Gecko/20100101 Firefox/35.0")
+                .SetRequestHeader("Accept", "application/json")
+                .SetRequestHeader("Accept-Language", "ko")
+                .SetRequestHeader("Connection", "keep-alive")
+                .SetRequestHeader("X-Kakao-ApiLevel", "31")
+                .SetRequestHeader("X-Kakao-DeviceInfo", "web:-;-;-")
+                .SetRequestHeader("X-Requested-With", "XMLHttpRequest")
+                .SetRequestHeader("Cookie", loginCookie)
+                .SetRequestHeader("Referer", "https://story.kakao.com/")
+                .Send()
+            End With
+        Catch ex As Exception
+            With Noty
+                .BalloonTipIcon = ToolTipIcon.None
+                .BalloonTipTitle = "Story Notifier(" & Now & ")"
+                .BalloonTipText = "인터넷 연결이 끊겼습니다. 인터넷이 연결되면 자동으로 알림이 재시작 됩니다."
+                .ShowBalloonTip(100)
+            End With
+
+            '//인터넷 커넥션 체크
+            Form1.Timer1.Enabled = False
+            Form1.Timer2.Enabled = True
+
+            Exit Sub
+        End Try
 
         If InStr(Win_Http.ResponseText, "created_at") Then
             NewNotyID = Split(Split(Win_Http.ResponseText, ",""created_at"":""")(1), """,""message")(0)

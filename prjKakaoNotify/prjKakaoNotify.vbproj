@@ -112,6 +112,8 @@
     <Compile Include="Form5.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="modConnection.vb" />
+    <Compile Include="clsCrypto.vb" />
     <Compile Include="modFont.vb" />
     <Compile Include="modForm.vb" />
     <Compile Include="modKakao.vb" />
@@ -190,23 +192,7 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="square_.ico" />
-    <None Include="Resources\ProfPreview.jpg" />
-    <None Include="Resources\yellow.png" />
-    <None Include="Resources\white.png" />
-    <None Include="Resources\skyblue.png" />
-    <None Include="Resources\red.png" />
-    <None Include="Resources\purple.png" />
-    <None Include="Resources\pink.png" />
-    <None Include="Resources\yellow_press.png" />
-    <None Include="Resources\white_press.png" />
-    <None Include="Resources\skyblue_press.png" />
-    <None Include="Resources\red_press.png" />
-    <None Include="Resources\purple_press.png" />
-    <None Include="Resources\pink_press.png" />
-    <None Include="Resources\orange_press.png" />
-    <None Include="Resources\orange.png" />
     <None Include="Resources\Close.png" />
-    <None Include="Resources\Noty_Icon_100px.png" />
     <None Include="Resources\hide.png" />
     <None Include="Resources\show.png" />
     <None Include="Resources\1473058858_Settings.png" />

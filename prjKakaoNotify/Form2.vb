@@ -7,6 +7,7 @@ Public Class Form2
     Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
 
         Dim setLogs As Boolean
+        Dim setAutoLogin As Boolean
 
         If chkLogSet.Checked = True Then
             setLogs = True
@@ -14,7 +15,13 @@ Public Class Form2
             setLogs = False
         End If
 
-        createSettings(Val(txtTime.Text) * 1000, setLogs)
+        If chkAutoLogin.Checked = True Then
+            setAutoLogin = True
+        Else
+            setAutoLogin = False
+        End If
+
+        createSettings(Val(txtTime.Text) * 1000, setLogs, setAutoLogin)
 
         loadSettings()
         Form1.Timer1.Interval = timerTime
@@ -23,12 +30,6 @@ Public Class Form2
     End Sub
 
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        '//폰트 초기 설정
-        setFontEB(18, Label1)
-        setFontEB(14.25, Label4)
-        setFontB(9, Label2, Label5)
-        setFontR(9, Label3, txtTime, chkLogSet)
 
         '//설정 로드
         txtTime.Text = timerTime / 1000
@@ -39,6 +40,12 @@ Public Class Form2
             chkLogSet.Checked = False
         End If
 
+        If autoLoginStatus = True Then
+            chkAutoLogin.Checked = True
+        Else
+            chkAutoLogin.Checked = False
+        End If
+
     End Sub
 
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
@@ -46,9 +53,22 @@ Public Class Form2
         EA = EA + 1
 
         If EA = 10 Then
-            MsgBox("이것은 설정입니다. 그러니까 그만 두드리세요.")
+            MsgBox("ALL BLACK : )")
             Me.BackColor = Color.Black
         End If
 
+    End Sub
+
+    Private Sub chkAutoLogin_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoLogin.CheckedChanged
+        If chkAutoLogin.Checked = True And File.Exists(accountPath) = False Then
+            MsgBox("계정 저장이 되어있지 않아 자동 로그인을 사용할 수 없습니다.", vbCritical, "Story Notifier")
+            chkAutoLogin.Checked = False
+        End If
+    End Sub
+
+    Private Sub txtTime_TextChanged(sender As Object, e As EventArgs) Handles txtTime.TextChanged
+        If IsNumeric(txtTime.Text) = False Then
+            MsgBox("숫자만 입력할 수 있습니다.", vbCritical, "Story Notifier")
+        End If
     End Sub
 End Class
