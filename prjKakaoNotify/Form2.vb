@@ -8,6 +8,7 @@ Public Class Form2
 
         Dim setLogs As Boolean
         Dim setAutoLogin As Boolean
+        Dim setBrowserExternal As Boolean
 
         If chkLogSet.Checked = True Then
             setLogs = True
@@ -15,13 +16,21 @@ Public Class Form2
             setLogs = False
         End If
 
-        If chkAutoLogin.Checked = True Then
-            setAutoLogin = True
+        'If chkAutoLogin.Checked = True Then
+        '    setAutoLogin = True
+        'Else
+        '    setAutoLogin = False
+        'End If
+
+        setAutoLogin = False
+
+        If rbWebExternal.Checked = True Then
+            setBrowserExternal = True
         Else
-            setAutoLogin = False
+            setBrowserExternal = False
         End If
 
-        createSettings(Val(txtTime.Text) * 1000, setLogs, setAutoLogin)
+        createSettings(Val(txtTime.Text) * 1000, setLogs, setAutoLogin, setBrowserExternal)
 
         loadSettings()
         Form1.Timer1.Interval = timerTime
@@ -46,6 +55,12 @@ Public Class Form2
             chkAutoLogin.Checked = False
         End If
 
+        If browserStatus = True Then
+            rbWebExternal.Checked = True
+        Else
+            rbWebInternal.Checked = True
+        End If
+
     End Sub
 
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
@@ -60,10 +75,10 @@ Public Class Form2
     End Sub
 
     Private Sub chkAutoLogin_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoLogin.CheckedChanged
-        If chkAutoLogin.Checked = True And File.Exists(accountPath) = False Then
-            MsgBox("계정 저장이 되어있지 않아 자동 로그인을 사용할 수 없습니다.", vbCritical, "Story Notifier")
-            chkAutoLogin.Checked = False
-        End If
+        'If chkAutoLogin.Checked = True And File.Exists(accountPath) = False Then
+        '    MsgBox("계정 저장이 되어있지 않아 자동 로그인을 사용할 수 없습니다.", vbCritical, "Story Notifier")
+        '    chkAutoLogin.Checked = False
+        'End If
     End Sub
 
     Private Sub txtTime_TextChanged(sender As Object, e As EventArgs) Handles txtTime.TextChanged

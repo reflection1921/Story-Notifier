@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("Reflection")>
 <Assembly: AssemblyProduct("KakaoStory Notifier")>
-<Assembly: AssemblyCopyright("Copyright © Reflection 2016-2017")>
+<Assembly: AssemblyCopyright("Copyright © Reflection 2016-2018")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 지정되도록 할 수 있습니다.
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.5.0.0")>
-<Assembly: AssemblyFileVersion("1.5.0.0")>
+<Assembly: AssemblyVersion("1.6.0.0")>
+<Assembly: AssemblyFileVersion("1.6.0.0")>

@@ -7,6 +7,7 @@ Module modSettings
     Public logStatus As Boolean
     Public timerTime As Integer
     Public autoLoginStatus As Boolean
+    Public browserStatus As Boolean '//True = 외부, False = 내부
 
     Public accountPath As String = Application.StartupPath & "\Account.xml"
     Public settingsPath As String = Application.StartupPath & "\Settings.xml"
@@ -103,7 +104,7 @@ Module modSettings
 
     End Function
 
-    Public Sub createSettings(timer As Integer, writeLogs As Boolean, autoLogin As Boolean)
+    Public Sub createSettings(timer As Integer, writeLogs As Boolean, autoLogin As Boolean, openBrowser As Boolean)
         Dim xmlW As New XmlTextWriter(settingsPath, System.Text.Encoding.UTF8)
         With xmlW
             .WriteStartDocument(True)
@@ -121,6 +122,10 @@ Module modSettings
             '//자동 로그인 설정
             .WriteStartElement("autoLogin")
             .WriteString(autoLogin)
+            .WriteEndElement()
+            '//자동 로그인 설정
+            .WriteStartElement("openBrowserExternal")
+            .WriteString(openBrowser)
             .WriteEndElement()
 
             .WriteEndElement()
@@ -152,6 +157,15 @@ Module modSettings
                     autoLoginStatus = True
                 Else
                     autoLoginStatus = False
+                End If
+
+            ElseIf xmlR.NodeType = XmlNodeType.Element AndAlso xmlR.Name = "openBrowserExternal" Then
+                Dim tmpBool3 As String
+                tmpBool3 = xmlR.ReadElementContentAsString
+                If tmpBool3 = "True" Then
+                    browserStatus = True
+                Else
+                    browserStatus = False
                 End If
 
             Else

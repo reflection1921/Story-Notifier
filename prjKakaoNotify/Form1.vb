@@ -8,28 +8,35 @@ Public Class Form1
     End Sub
 
     Private Sub lblLogin_Click(sender As Object, e As EventArgs) Handles lblLogin.Click
-        loginCookie = LoginWithCookie(txtID.Text, txtPW.Text)
+        'loginCookie = LoginWithCookie(txtID.Text, txtPW.Text)
 
-        If loginCookie = Nothing Then
+        'If loginCookie = Nothing Then
 
-            MsgBox("로그인에 실패하였습니다." & vbCrLf & "아이디 또는 비밀번호를 확인해주세요.", , "로그인")
+        '    MsgBox("로그인에 실패하였습니다." & vbCrLf & "아이디 또는 비밀번호를 확인해주세요.", , "로그인")
 
-        Else
-            whenLoginOut(True)
+        'Else
+        '    whenLoginOut(True)
 
-            If CheckBox1.Checked = True Then
-                createAccount(txtID.Text, EncryptTripleDES(txtPW.Text))
-            End If
+        '    If CheckBox1.Checked = True Then
+        '        createAccount(txtID.Text, EncryptTripleDES(txtPW.Text))
+        '    End If
 
-            MyStoryID = loadMyStoryID()
+        '    MyStoryID = loadMyStoryID()
 
-            Notify(NotifyIcon1)
-        End If
+        '    Notify(NotifyIcon1)
+        'End If
+
+        Form3.Show()
     End Sub
 
     Private Sub NotifyIcon1_BalloonTipClicked(sender As Object, e As EventArgs) Handles NotifyIcon1.BalloonTipClicked
 
-        Shell("explorer.exe https://story.kakao.com/" & BoardID)
+        If browserStatus = True Then
+            Shell("explorer.exe https://story.kakao.com/" & BoardID)
+        Else
+            Form4.Show()
+            Form4.webView.Navigate("https://story.kakao.com/" & BoardID)
+        End If
 
     End Sub
 
@@ -106,7 +113,7 @@ Public Class Form1
 
         '// 설정파일 X => 설정 파일 생성
         If File.Exists(settingsPath) = False Then
-            createSettings(5000, True, False)
+            createSettings(5000, True, False, False)
         Else
             '//프로그램 업데이트를 통한 설정 파일 수정
             If checkSettings("Timer") = False Then
@@ -115,6 +122,10 @@ Public Class Form1
 
             If checkSettings("writeLogs") = False Then
                 addSettings("writeLogs", "True")
+            End If
+
+            If checkSettings("openBrowserExternal") = False Then
+                addSettings("openBrowserExternal", "False")
             End If
 
             If checkSettings("autoLogin") = False Then
@@ -127,28 +138,31 @@ Public Class Form1
 
         lblLogin.ForeColor = Color.White '//로그인 버튼 비활성화 처럼 보이도록 설정
 
-        If File.Exists(accountPath) = True Then
+        'If File.Exists(accountPath) = True Then
 
-            CheckBox1.Checked = True
-            txtID.ForeColor = Color.Black
-            txtPW.ForeColor = Color.Black
-            lblLogin.ForeColor = Color.Black
-            txtPW.PasswordChar = "●"
+        '    CheckBox1.Checked = True
+        '    txtID.ForeColor = Color.Black
+        '    txtPW.ForeColor = Color.Black
+        '    lblLogin.ForeColor = Color.Black
+        '    txtPW.PasswordChar = "●"
 
-            txtID.Text = loadAccount(True)
-            txtPW.Text = DecryptTripleDES(loadAccount(False))
+        '    txtID.Text = loadAccount(True)
+        '    txtPW.Text = DecryptTripleDES(loadAccount(False))
 
-        Else
-            If autoLoginStatus = True Then
-                MsgBox("저장된 계정이 없어 자동 로그인을 비활성화 하였습니다. 계정을 저장한 다음, 설정에서 자동 로그인 기능을 활성화 하세요.")
-                modifySettings("autoLogin", "False")
-                autoLoginStatus = False
-            End If
-        End If
+        'Else
+        '    If autoLoginStatus = True Then
+        '        MsgBox("저장된 계정이 없어 자동 로그인을 비활성화 하였습니다. 계정을 저장한 다음, 설정에서 자동 로그인 기능을 활성화 하세요.")
+        '        modifySettings("autoLogin", "False")
+        '        autoLoginStatus = False
+        '    End If
+        'End If
 
-        If autoLoginStatus = True Then
-            lblLogin_Click(lblLogin, e)
-        End If
+        'If autoLoginStatus = True Then
+        '    lblLogin_Click(lblLogin, e)
+        'End If
+
+
+        Form3.Show()
 
     End Sub
 

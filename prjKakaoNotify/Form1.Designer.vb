@@ -167,6 +167,7 @@ Partial Class Form1
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Enabled = False
         Me.CheckBox1.Font = New System.Drawing.Font("나눔고딕", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox1.Location = New System.Drawing.Point(26, 102)
         Me.CheckBox1.Name = "CheckBox1"
@@ -295,6 +296,7 @@ Partial Class Form1
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "Form1"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Story Notifier"
         Me.ContextMenuStrip1.ResumeLayout(False)
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
